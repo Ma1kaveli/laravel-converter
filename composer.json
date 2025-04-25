@@ -1,0 +1,32 @@
+{
+    "name": "makaveli/laravel-converter",
+    "type": "library",
+    "description": "Advanced Converter utils for Laravel",
+    "keywords": ["laravel", "framework"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Udovenko",
+            "email": "mikhail.udovenko.02@mail.ru"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^10.10|^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelConverter\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [],
+            "providers": [
+                "LaravelConverter\\Providers\\ConverterServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
