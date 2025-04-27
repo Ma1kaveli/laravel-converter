@@ -1,6 +1,6 @@
 <?php
 
-use LaravelConverter\Constants\CaseConstants;
+use Converter\Constants\CaseConstants;
 
 return [
     'convert_from' => CaseConstants::CASE_CAMEL,
