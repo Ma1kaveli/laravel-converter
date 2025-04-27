@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelConverter\Constants;
+namespace Converter\Constants;
 
 class CaseConstants {
     const CASE_SNAKE = 'snake';

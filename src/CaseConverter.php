@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelConverter;
+namespace Converter;
 
-use LaravelConverter\Constants\CaseConstants;
+use Converter\Constants\CaseConstants;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;

@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelConverter\Helpers;
+namespace Converter\Helpers;
 
 class QueryParams
 {

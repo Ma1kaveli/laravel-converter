@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelConverter\Providers;
+namespace Converter\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -16,14 +16,14 @@
     },
     "autoload": {
         "psr-4": {
-            "LaravelConverter\\": "src/"
+            "Converter\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "dont-discover": [],
             "providers": [
-                "LaravelConverter\\Providers\\ConverterServiceProvider"
+                "Converter\\Providers\\ConverterServiceProvider"
             ]
         }
     },

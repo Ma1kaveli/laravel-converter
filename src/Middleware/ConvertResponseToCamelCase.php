@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelConverter\Middleware;
+namespace Converter\Middleware;
 
-use LaravelConverter\CaseConverter;
-use LaravelConverter\Constants\CaseConstants;
+use Converter\CaseConverter;
+use Converter\Constants\CaseConstants;
 
 use Closure;
 use Illuminate\Http\JsonResponse;

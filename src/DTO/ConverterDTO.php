@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelConverter\DTO;
+namespace Converter\DTO;
 
-use LaravelConverter\Constants\CaseConstants;
-use LaravelConverter\CaseConverter;
-use LaravelConverter\Helpers\QueryParams;
+use Converter\Constants\CaseConstants;
+use Converter\CaseConverter;
+use Converter\Helpers\QueryParams;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
