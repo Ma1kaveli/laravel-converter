@@ -4,7 +4,6 @@ namespace Converter\Helpers;
 
 class QueryParams
 {
-
     /**
      * defaultPaginationParamsKeys
      *

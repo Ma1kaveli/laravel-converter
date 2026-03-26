@@ -1,104 +1,125 @@
-# Документация к библиотеке "makaveli/laravel-converter"
+# makaveli/laravel-converter
 
-## Введение
+[![Packagist Version](https://img.shields.io/packagist/v/makaveli/laravel-converter.svg?style=flat-square)](https://packagist.org/packages/makaveli/laravel-converter)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/makaveli/laravel-converter.svg?style=flat-square)](https://packagist.org/packages/makaveli/laravel-converter)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
-Библиотека **makaveli/laravel-converter** предоставляет утилиты для продвинутой конвертации данных в Laravel-приложениях. Она фокусируется на преобразовании ключей массивов между различными стилями написания (snake_case, camelCase, kebab-case, studlyCase), обработке query-параметров запросов и автоматической конвертации ответов. Это упрощает работу с данными, особенно в API, где consistency в стиле ключей важна.
+## 🌍 Languages
 
-Основные цели библиотеки:
-- Автоматическая конвертация ключей в массивах и запросах.
-- Обработка сортировки и пагинации в query-параметрах.
-- Интеграция с Laravel (версии 10-12) и PHP 8.2+.
-- Лицензия: MIT.
-- Автор: Michael Udovenko.
+- 🇺🇸 English (default)
+- 🇷🇺 [Русская версия](docs/ru/README.md)
 
-Библиотека предназначена как зависимость для других пакетов (например, `makaveli/laravel-core`), но может использоваться самостоятельно.
+## Table of Contents
 
-## Установка
+1. [Introduction](#introduction)
+2. [Installation](#installation)
+3. [Configuration](#configuration)
+4. [Main components](#main-components)
+5. [Examples](#examples)
+6. [Recommendations](#recommendations)
 
-1. Установите библиотеку через Composer:
-   ```
-   composer require makaveli/laravel-converter
-   ```
+## Introduction
 
-2. Опубликуйте конфигурационный файл:
-   ```
-   php artisan vendor:publish --tag=converter-config
-   ```
-   Это создаст файл `config/converter.php` в вашем проекте.
+The **makaveli/laravel-converter** library provides utilities for data transformation in Laravel applications.
+This library allows you to transform array keys between different naming conventions (snake_case, camelCase, kebab-case, StudlyCase), proccess query params in requests and automatically convert data for response. It simplifies working with data, especially in APIs where consistent key naming is important.
 
-3. Зарегистрируйте провайдер в `config/app.php` (если не зарегистрирован автоматически):
-   ```php
+Main goals for this library are:
+- Automatically convert array keys and requests.
+- Prepare sort and pagination in query params
+- Integration with Laravel ^10+ and PHP 8.2+
+- License: MIT.
+- Author: Michael Udovenko.
+
+## ## Installation
+
+1. Download library from Composer:
+    ```
+    composer require makaveli/laravel-converter
+    ```
+
+2. Publish configuration file (this will create `config/converter.php` file in your project):
+    ```
+    php artisan vendor:publish --tag=converter-config
+    ```
+
+3. Register provider in `config/app.php` file (if it's not registered automatically)
+    ```php
    'providers' => [
        // ...
        \Converter\Providers\ConverterServiceProvider::class,
    ],
    ```
 
-4. (Опционально) Добавьте middleware для конвертации ответов в `app/Http/Kernel.php`:
+4. *(optional)* Add middleware to convert your responses in `app/Http/Kernel.php`:
    ```php
    protected $middleware = [
        // ...
-       \Converter\Middleware\ConvertResponseToCamelCase::class,
+       \Converter\Middleware\ConvertResponseTo::class,
    ];
    ```
 
-## Конфигурация
+## Configuration
 
-Конфигурационный файл `config/converter.php` содержит настройки:
-- `'convert_from' => CaseConstants::CASE_CAMEL`: Исходный стиль ключей (для конвертации из).
-- `'convert_to' => CaseConstants::CASE_SNAKE`: Целевой стиль ключей (для конвертации в).
-- `'query_params'`: Настройки для обработки query-параметров.
-  - `'descending_default_value' => 'asc'`: Значение по умолчанию для сортировки (ascending/descending).
-  - `'sort_by_default_value' => 'created_at'`: Поле сортировки по умолчанию.
-  - `'request_sort_by'`: Ключи для сортировки в запросе (`'name'`, `'descending_key'`, `'sort_by_key'`).
-  - `'return_descending_name' => 'descending'`: Имя возвращаемого параметра для направления сортировки.
-  - `'return_sort_by_name' => 'sort_by'`: Имя возвращаемого параметра для поля сортировки.
+Configuration file `config/converter.php` includes the following settings:
+- `'convert_from' => CaseConstants::CASE_CAMEL`: Original keys style (for convert from).
+- `'convert_to' => CaseConstants::CASE_SNAKE`: Target keys style (for convert to).
+- `'query_params'`: Settings for proccess query params.
+  - `'descending_default_value' => 'asc'`: Default direction value for sort (ascending/descending).
+  - `'sort_by_default_value' => 'created_at'`: Default field value for sort.
+  - `'request_sort_by'`: Keys for sort in request (`'name'`, `'descending_key'`, `'sort_by_key'`).
+  - `'return_descending_name' => 'descending'`: Return param name for direction sort value.
+  - `'return_sort_by_name' => 'sort_by'`: Return param name for sort value.
 
-Вы можете переопределить эти значения для адаптации под ваш проект.
+You can override these values for adapt them to your project.
 
-## Основные компоненты
+## Main components
 
-Библиотека разделена на модули (неймспейс `Converter`). Ниже описаны ключевые части.
+The library is divided into modules (namespace `Converter`). Below are the main components.
 
-### Константы
+### Constants
 
-- **CaseConstants**: Определяет стили case:
-  - `CASE_SNAKE` ('snake' — для snake_case).
-  - `CASE_CAMEL` ('camel' — для camelCase).
-  - `CASE_KEBAB` ('kebab' — для kebab-case).
-  - `CASE_STUDLY` ('studly' — для StudlyCase).
+- **CaseConstants**: Include case styles:
+  - `CASE_SNAKE` ('snake' — for snake_case).
+  - `CASE_CAMEL` ('camel' — for camelCase).
+  - `CASE_KEBAB` ('kebab' — for kebab-case).
+  - `CASE_STUDLY` ('studly' — for StudlyCase).
 
 ### DTO
 
-- **ConverterDTO**: Основной класс для конвертации данных.
-  - Конструктор: Инициализирует `CaseConverter`.
-  - `getQueryParams(Request $request, array $paramNames, ?array $sortByMapper = null, string $sortByKey = 'sort_by')`: Извлекает и конвертирует query-параметры (с поддержкой маппинга сортировки).
-  - `getRequestData(array $data)`: Конвертирует массив данных в целевой case (из конфига).
+- **ConverterDTO**: Base class for convert data.
+  - `__constructor` is init `CaseConverter` class.
+  - `getQueryParams(Request $request, array $paramNames, ?array $sortByMapper = null, string $sortByKey = 'sort_by')` extracts and converts query params (with sort mapping).
+  - `getRequestData(array $data)`: converts array data to target case (from config).
 
-### Helpers
+### Helper methods
 
-- **QueryParams**: Вспомогательные методы для query-параметров.
-  - `defaultPaginationParamsKeys()`: Возвращает ключи по умолчанию для пагинации (showDeleted, rowsPerPage и т.д.).
-  - `getSortParams(array $params, array $sortTypes)`: Обрабатывает параметры сортировки с дефолтами.
-  - `convertArrStrToArrNumber(array $params)`: Конвертирует массив строк в числа.
-  - `mapSortBy(array $params, array $mapper, string $sortByKey = 'sort_by')`: Маппит значения сортировки.
+- **ConverterHelpers**: Advantage methods which use `CaseConverter` class
+  - `convertResult(mixed $resource)` Converts the result to the desired format
+
+- **QueryParams**: Advantage methods for query params
+  - `defaultPaginationParamsKeys()`: Returns default keys for pagination (showDeleted, rowsPerPage and etc.).
+  - `getSortParams(array $params, array $sortTypes)`: Proccesses sort params with default values.
+  - `convertArrStrToArrNumber(array $params)`: Conversts from an array of strings to array of numbers.
+  - `mapSortBy(array $params, array $mapper, string $sortByKey = 'sort_by')`: Mappings fields of sort.
 
 ### Middleware
 
-- **ConvertResponseToCamelCase**: Middleware для автоматической конвертации JSON-ответов в camelCase (или другой from-case из конфига). Применяется глобально или к роутам.
+- **ConvertResponseTo**: Middleware for automatically converts JSON responses to other case from config (from-case).
+Can be used globally or for specific routes.
 
 ### Providers
 
-- **ConverterServiceProvider**: Регистрирует и публикует конфиг.
+- **ConverterServiceProvider**: Registers and publishes config.
 
-### Core Класс
+### Core class
 
-- **CaseConverter**: Основной конвертер.
-  - `convert(string $case, array $data)`: Рекурсивно конвертирует ключи массива в указанный case. Поддерживает вложенные массивы. Бросает исключение при неизвестном case.
+- **CaseConverter**: Main converter.
 
-## Примеры использования
+  - `convert(string $case, array $data)`: Recursive converts array keys to certain case. Supports nested arrays. Throw `InvalidArgumentException` class if case is unknown.
 
-### Конвертация массива
+## Examples
+
+### Convert array
 ```php
 use Converter\CaseConverter;
 use Converter\Constants\CaseConstants;
@@ -106,27 +127,41 @@ use Converter\Constants\CaseConstants;
 $converter = new CaseConverter();
 $data = ['first_name' => 'John', 'last_name' => 'Doe'];
 $converted = $converter->convert(CaseConstants::CASE_CAMEL, $data);
-// Результат: ['firstName' => 'John', 'lastName' => 'Doe']
+// Result: ['firstName' => 'John', 'lastName' => 'Doe']
 ```
 
-### Обработка query-параметров
+### Convert Eloquent Model or Collection (or other object that has toJson() method)
+```php
+$user = User::findOrFail($id);
+$users = User::all();
+
+return response()->json([
+    'user' => ConverterHelpers::convertResult($user),
+    'users' => ConverterHelpers::convertResult($users)
+]);
+// If you have CaseConstants::CASE_CAMEL in your config file all fields of user model and collection will be converted from snake_case to camelCase
+```
+
+### Proccess query-params
 ```php
 use Converter\DTO\ConverterDTO;
 use Illuminate\Http\Request;
 
 $dto = new ConverterDTO();
 $params = ConverterDTO::getQueryParams($request, ['sort_by', 'descending'], ['price' => 'price_asc']);
-// Конвертирует и маппит параметры в snake_case (по конфигу).
+// Converts and maps to snake_case (by config).
 ```
 
-### Middleware в действии
-После добавления middleware, все JSON-ответы автоматически конвертируются (например, из snake_case в camelCase).
+### Middleware
 
-## Рекомендации
+After adding `ConvertResponseTo` middleware to `Kernel.php` all yours JSON-reponses will be automatically convert (for example from case_snake to camelCase).
 
-- Используйте в API для consistency стилей ключей.
-- Настройте конфиг для интеграции с другими библиотеками (например, `laravel-core`).
-- Для вложенных данных конвертер работает рекурсивно.
-- Если нужен кастомный case, добавьте в `CaseConstants` и обновите валидацию.
+## Recommendations
 
-Библиотека проста и легковесна, идеальна для утилитарных задач. Если нужны дополнения, обратитесь к исходному коду на GitHub: https://github.com/Ma1kaveli/laravel-converter.
+- Use in APIs to maintain consistent key naming.
+- Configure it for integration with other libraries (for example `makaveli/laravel-core`).
+- For nested data converter works recursive.
+- If you need custom case add it to `CaseConstants` and refresh validation.
+
+This library is easy and lightweight so it's perfect for utilitarian tasks. 
+If you need extra information visit [GitHub page for this project](https://github.com/Ma1kaveli/laravel-converter)

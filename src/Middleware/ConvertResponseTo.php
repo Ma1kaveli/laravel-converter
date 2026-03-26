@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ConvertResponseToCamelCase
+class ConvertResponseTo
 {
     /**
      * Handle an incoming request.
