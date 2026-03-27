@@ -15,7 +15,17 @@
 2. [Installation](#installation)
 3. [Configuration](#configuration)
 4. [Main components](#main-components)
+    - [Constants](#constants)
+    - [DTO](#dto)
+    - [Helper methods](#helper-methods)
+    - [Middleware](#middleware)
+    - [Providers](#providers)
+    - [Core class](#core-class)
 5. [Examples](#examples)
+    - [Convert array](#convert-array)
+    - [Convert Eloquent Model or Collection (or other object that has toJson() method)](#convert-eloquent-model-or-collection-or-other-object-that-has-tojson-method)
+    - [Proccess query-params](#proccess-query-params)
+    - [Middleware](#middleware-1)
 6. [Recommendations](#recommendations)
 
 ## Introduction
@@ -30,7 +40,7 @@ Main goals for this library are:
 - License: MIT.
 - Author: Michael Udovenko.
 
-## ## Installation
+## Installation
 
 1. Download library from Composer:
     ```
